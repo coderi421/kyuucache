@@ -3,7 +3,6 @@ package channel
 import (
 	"context"
 	"errors"
-	"fmt"
 	"sync"
 )
 
@@ -42,11 +41,8 @@ func (b *Broker) Send(ctx context.Context, msg Msg) error {
 		return errors.New("queue 尚不可用或已经关闭")
 	}
 	chans, ok := b.chans[msg.Topic]
-	if len(chans) == 3 {
-		fmt.Println(111)
-	}
 	if !ok {
-		return errors.New("投递topic消息错误")
+		return errors.New("topic 不存在，消息无法投递")
 	}
 	b.mutex.RLock()
 	defer b.mutex.RUnlock()
